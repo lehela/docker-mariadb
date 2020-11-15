@@ -1,6 +1,10 @@
 # Raspberry Pi MariaDB Docker Repository
 
-## Forked from https://github.com/docker-library/mariadb
+This is a repository with which I'm learning Docker containerization. As i have a need for MariaDB containers for my Raspberry Pi I thought cloning and adapting the Docker "Official Image" which does not support armhf architecture will help me learn faster. Further, I'm documenting my setup here, but this is part of my learning process.
+
+I'm aware that there are excellent existing MariaDB images for ARM architecture, e.g. by [LinuxServer.io](https://hub.docker.com/r/linuxserver/mariadb). Please pay them a visit if you are looking for good & reliable Docker images to run on a Raspberry Pi.
+
+### Forked from https://github.com/docker-library/mariadb
 
 This is the Git repo of the [Docker "Official Image"](https://github.com/docker-library/official-images#what-are-official-images) for [`mariadb`](https://hub.docker.com/_/mariadb/) adapted to run on Raspberry Pi's armhf architecture. 
 
