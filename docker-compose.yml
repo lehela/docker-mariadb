@@ -1,0 +1,68 @@
+version: "3.8"
+
+services:
+    db:
+        build: 
+            context: .
+            dockerfile: 10.3/Dockerfile
+            network: goonet
+            labels: 
+                com.lehela.description: "MariaDB server for Raspberry PI"
+        image: mariadb:10.3.25
+        environment: 
+            - MYSQL_ROOT_PASSWORD=s3cr3tP@ssW0rd
+            - MYSQL_ROOT_HOST=%
+        networks:
+            - goonet
+        volumes: 
+            #- mariadb-data:/var/lib/mysql
+            - mariadb-backup_20201115:/var/lib/mysql
+        ports:
+            - "3310:3306"
+    db_tool:
+        # depends_on: ["db"]
+        build:
+            context: .
+            dockerfile: mariadb-backup/Dockerfile
+            network: goonet
+                
+        image: mariadb-backup:10.3.25
+        environment: 
+            - MYSQL_ROOT_HOST=mariadb_db_1
+            - MYSQL_ROOT_PASSWORD=s3cr3tP@ssW0rd
+        networks: 
+            - goonet
+        volumes: 
+            - mariadb-data:/var/lib/mysql
+            - mariadb-backup:/backup
+        # Default command is "help". The allowed actions are "backup" and "restore"
+        command: ["help"]
+
+    db_tool_debug:
+        #depends_on: ["db"]
+        build:
+            context: .
+            dockerfile: mariadb-backup/Dockerfile
+            network: goonet
+                
+        image: mariadb-backup:10.3.25
+        stdin_open: true # docker run -i
+        tty: true        # docker run -t
+        
+        environment: 
+            - MYSQL_ROOT_HOST=mariadb_db_1
+            - MYSQL_ROOT_PASSWORD=s3cr3tP@ssW0rd
+        networks: 
+            - goonet
+        volumes: 
+            - mariadb-data:/var/lib/mysql
+            - mariadb-backup:/backup
+        entrypoint: ["/bin/bash"]
+
+networks: 
+    goonet:
+        driver: bridge
+volumes: 
+    mariadb-data:
+    mariadb-backup:
+    mariadb-backup_20201115:
